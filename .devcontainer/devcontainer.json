@@ -1,0 +1,10 @@
+{
+  "name": "oma",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteEnv": {
+    "PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
+  },
+  "postCreateCommand": "bash scripts/devcontainer-setup.sh"
+}
