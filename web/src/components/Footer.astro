@@ -1,0 +1,17 @@
+---
+import { getFooterLinks } from '../data/provider';
+import { strings, t } from '../i18n';
+
+const links = getFooterLinks();
+---
+
+<footer class="oma-footer">
+  <div class="oma-footer__inner">
+    <div class="oma-footer__links">
+      {links.map((link) => (
+        <a key={link.id} class="oma-footer__link" href="#">{t(link.labelKey)}</a>
+      ))}
+    </div>
+    <div class="oma-footer__update">{strings.footer.updatedLabel}</div>
+  </div>
+</footer>

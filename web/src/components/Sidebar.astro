@@ -1,0 +1,45 @@
+---
+import { getSidebarActions } from '../data/provider';
+import { strings, t } from '../i18n';
+
+const actions = getSidebarActions();
+
+const renderIcon = (icon: string) => {
+  switch (icon) {
+    case 'pin':
+      return '📍';
+    case 'euro':
+      return '€';
+    case 'factory':
+      return '🏭';
+    case 'download':
+      return '⬇️';
+    default:
+      return '•';
+  }
+};
+---
+
+<aside class="oma-sidebar" aria-label={strings.sidebar.title}>
+  <div class="oma-card oma-sidebar__card">
+    <h2>{strings.sidebar.title}</h2>
+    <div class="oma-sidebar__actions">
+      {actions.map((action) => (
+        <button type="button" class="oma-action" key={action.id}>
+          <span class="oma-action__icon" aria-hidden="true">{renderIcon(action.icon)}</span>
+          <span class="oma-action__content">
+            <span class="oma-action__title">{t(action.titleKey)}</span>
+            <span class="oma-action__desc">{t(action.descriptionKey)}</span>
+          </span>
+          <span class="oma-action__chevron" aria-hidden="true">›</span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="oma-card oma-sidebar__card oma-sidebar__sources">
+    <h3>{strings.sidebar.sourcesTitle}</h3>
+    <p>{strings.sidebar.sourcesList}</p>
+    <a href="#" class="oma-link">{strings.sidebar.transparencyLink}</a>
+  </div>
+</aside>

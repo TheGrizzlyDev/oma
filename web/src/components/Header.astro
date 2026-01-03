@@ -1,0 +1,51 @@
+---
+import { getNavItems } from '../data/provider';
+import { strings, t } from '../i18n';
+
+const navItems = getNavItems();
+---
+
+<header class="oma-header">
+  <div class="oma-header__inner">
+    <div class="oma-header__brand">
+      <div class="oma-header__logo" aria-hidden="true">
+        <svg viewBox="0 0 64 32" role="img" aria-hidden="true">
+          <path
+            d="M2 28 L18 10 L30 20 L46 6 L62 28"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M6 28 H58"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+          />
+        </svg>
+      </div>
+      <div>
+        <p class="oma-header__title">{strings.app.name}</p>
+        <p class="oma-header__subtitle">{strings.app.subtitle}</p>
+      </div>
+    </div>
+    <nav class="oma-header__nav" aria-label={strings.app.name}>
+      <ul>
+        {navItems.map((item) => (
+          <li key={item.id}>
+            <a href="#" class="oma-header__link">
+              {t(item.labelKey)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <div class="oma-header__search">
+      <input type="search" placeholder={strings.nav.searchPlaceholder} aria-label={strings.nav.searchPlaceholder} />
+      <span class="oma-header__search-icon" aria-hidden="true">🔍</span>
+    </div>
+  </div>
+</header>

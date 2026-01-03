@@ -1,0 +1,21 @@
+---
+import '../styles/global.css';
+import { strings } from '../i18n';
+
+const { title = strings.app.name } = Astro.props;
+---
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="oma-page">
+      <slot />
+    </div>
+  </body>
+</html>
