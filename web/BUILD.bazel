@@ -1,0 +1,7 @@
+load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_run_binary", "js_test")
+
+js_binary(
+    name = "astro",
+    data = ["//:node_modules/astro"],
+    entry_point = "packages/astro/astro.js",
+)
