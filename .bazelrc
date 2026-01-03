@@ -2,3 +2,4 @@ try-import .bazelrc.user
 
 common:nixos --action_env=PATH=/run/current-system/sw/bin
 common:nixos --repo_env=PATH=/run/current-system/sw/bin
+common:nixos --host_action_env=PATH=/run/current-system/sw/bin
