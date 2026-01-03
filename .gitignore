@@ -1,2 +1,3 @@
 bazel-*
 .aspect
+.bazelrc.user
