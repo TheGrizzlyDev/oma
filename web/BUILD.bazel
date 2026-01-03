@@ -8,3 +8,57 @@ js_binary(
     data = [":node_modules"],
     entry_point = "astro_cli.mjs",
 )
+
+js_run_binary(
+    name = "build",
+    tool = ":astro",
+    args = ["build"],
+    chdir = package_name(),
+    out_dirs = ["dist"],
+    srcs = glob(
+        [
+            "astro.config.mjs",
+            "package.json",
+            "package-lock.json",
+            "public/**",
+            "src/**",
+            "tsconfig.json",
+        ],
+    ),
+)
+
+js_run_binary(
+    name = "dev",
+    tool = ":astro",
+    args = ["build", "--devOutput"],
+    chdir = package_name(),
+    out_dirs = ["dist"],
+    srcs = glob(
+        [
+            "astro.config.mjs",
+            "package.json",
+            "package-lock.json",
+            "public/**",
+            "src/**",
+            "tsconfig.json",
+        ],
+    ),
+)
+
+js_binary(
+    name = "preview",
+    data = [
+        ":dev",
+        ":node_modules",
+    ],
+    entry_point = "astro_cli.mjs",
+    args = [
+        "--root",
+        "$(location :dev)/..",
+        "preview",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "4321",
+    ],
+)
