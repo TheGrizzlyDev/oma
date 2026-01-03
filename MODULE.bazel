@@ -5,7 +5,6 @@ pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
 pnpm.pnpm(name = "pnpm")
 use_repo(pnpm, "pnpm", "pnpm__links")
 
-
 npm = use_extension(
     "@aspect_rules_js//npm:extensions.bzl",
     "npm",
@@ -13,17 +12,16 @@ npm = use_extension(
 )
 npm.npm_translate_lock(
     name = "npm",
+    data = [
+        "//:pnpm-workspace.yaml",
+        "//web:package.json",
+    ],
     generate_bzl_library_targets = True,
     npmrc = "//:.npmrc",
     pnpm_lock = "//:pnpm-lock.yaml",
     update_pnpm_lock = True,
     verify_node_modules_ignored = "//:.bazelignore",
-    data = [
-        "//:pnpm-workspace.yaml",
-        "//web:package.json",
-    ],
 )
-
 use_repo(
     npm,
     "npm",
@@ -34,4 +32,5 @@ node.toolchain(node_version = "20.17.0")
 use_repo(node, "nodejs_toolchains")
 
 register_toolchains("@nodejs_toolchains//:linux_amd64_toolchain_target")
+
 register_toolchains("@nodejs_toolchains//:linux_amd64_toolchain")
