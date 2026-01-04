@@ -26,6 +26,26 @@ def _line_detection_geojson_impl(ctx):
         progress_message = "Detecting colored lines",
     )
 
+    overlay_script = ctx.actions.declare_file(ctx.label.name + "_overlay.sh")
+    overlay_output = ctx.label.name + "_overlay.html"
+    image_short_path = ctx.file.image.short_path
+    geojson_short_path = output.short_path
+    viewer_short_path = ctx.executable._viewer.short_path
+
+    ctx.actions.expand_template(
+        template = ctx.file._overlay_template,
+        output = overlay_script,
+        substitutions = {
+            "@WORKSPACE@": ctx.workspace_name,
+            "@IMAGE_SHORT_PATH@": image_short_path,
+            "@GEOJSON_SHORT_PATH@": geojson_short_path,
+            "@VIEWER_SHORT_PATH@": viewer_short_path,
+            "@OUTPUT_FILE@": overlay_output,
+            "@BBOX@": " ".join(ctx.attr.bbox),
+        },
+        is_executable = True,
+    )
+
     metadata = {
         "bbox": ctx.attr.bbox,
         "polygon": ctx.attr.polygon,
@@ -35,8 +55,23 @@ def _line_detection_geojson_impl(ctx):
         "image": str(ctx.attr.image.label),
     }
 
+    viewer_runfiles = ctx.runfiles(
+        files = [ctx.executable._viewer],
+        transitive_files = ctx.attr._viewer[DefaultInfo].default_runfiles.files,
+    )
+
     return [
-        DefaultInfo(files = depset([output])),
+        DefaultInfo(
+            files = depset([output, overlay_script]),
+            executable = overlay_script,
+            runfiles = ctx.runfiles(
+                files = [
+                    ctx.file.image,
+                    output,
+                    ctx.executable._viewer,
+                ],
+            ).merge(viewer_runfiles),
+        ),
         TransformationInfo(
             description = "Detect colored linework and export GeoJSON LineStrings.",
             metadata = metadata,
@@ -46,6 +81,7 @@ def _line_detection_geojson_impl(ctx):
 
 line_detection_geojson = rule(
     implementation = _line_detection_geojson_impl,
+    executable = True,
     attrs = {
         "image": attr.label(
             allow_single_file = True,
@@ -84,6 +120,17 @@ line_detection_geojson = rule(
             executable = True,
             cfg = "exec",
             doc = "Line detection executable.",
+        ),
+        "_viewer": attr.label(
+            default = Label("//extractors/line_detection:visualize_overlay"),
+            executable = True,
+            cfg = "exec",
+            doc = "HTML overlay viewer generator.",
+        ),
+        "_overlay_template": attr.label(
+            default = Label("//extractors/line_detection:overlay_runner.sh.tpl"),
+            allow_single_file = True,
+            doc = "Template for the overlay runner script.",
         ),
     },
     doc = (

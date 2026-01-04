@@ -2,6 +2,8 @@ load(":line_detection.bzl", "line_detection_geojson")
 load("@pypi//:requirements.bzl", "requirement")
 load("@rules_python//python:defs.bzl", "py_binary")
 
+exports_files(["overlay_runner.sh.tpl"])
+
 py_binary(
     name = "detect_lines",
     srcs = ["detect_lines.py"],
@@ -10,6 +12,11 @@ py_binary(
         requirement("opencv-python-headless"),
         requirement("shapely"),
     ],
+)
+
+py_binary(
+    name = "visualize_overlay",
+    srcs = ["visualize_overlay.py"],
 )
 
 line_detection_geojson(
