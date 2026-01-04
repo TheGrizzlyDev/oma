@@ -1,8 +1,18 @@
 load(":line_detection.bzl", "line_detection_geojson")
 load("@pypi//:requirements.bzl", "requirement")
-load("@rules_python//python:defs.bzl", "py_binary")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
 
 exports_files(["overlay_runner.sh.tpl"])
+
+py_library(
+    name = "pipeline_utils",
+    srcs = ["pipeline_utils.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        requirement("numpy"),
+        requirement("opencv-python-headless"),
+    ],
+)
 
 py_binary(
     name = "detect_lines",
@@ -17,16 +27,7 @@ py_binary(
 py_binary(
     name = "visualize_overlay",
     srcs = ["visualize_overlay.py"],
-)
-
-line_detection_geojson(
-    name = "cam_waterlines_geojson",
-    image = "@oma_data_oma_cam_waterlines_map//:artifact",
-    bbox = ["0", "0", "1200", "958"],
-    polygon = "0,0 1200,0 1200,958 0,958",
-    lower_hsv = "100,50,50",
-    upper_hsv = "140,255,255",
-    simplify = "0.002",
-    out = "cam_waterlines.geojson",
-    visibility = ["//visibility:public"],
+    deps = [
+        requirement("opencv-python-headless"),
+    ],
 )

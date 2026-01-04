@@ -1,0 +1,14 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary")
+
+exports_files(["rules.bzl"])
+
+py_binary(
+    name = "morphology_filter",
+    srcs = ["morphology_filter.py"],
+    deps = [
+        "//extractors/line_detection:pipeline_utils",
+        requirement("numpy"),
+        requirement("opencv-python-headless"),
+    ],
+)

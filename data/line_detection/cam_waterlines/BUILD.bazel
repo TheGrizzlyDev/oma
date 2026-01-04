@@ -1,0 +1,126 @@
+load("//exporters:defs.bzl", "line_artifact_mask", "line_binarize", "line_detection_geojson", "line_morphology", "line_segmentation", "line_skeleton", "line_topology_cleanup", "line_vectorize")
+
+line_detection_geojson(
+    name = "cam_waterlines_geojson",
+    image = "@oma_data_oma_cam_waterlines_map//:artifact",
+    bbox = ["0", "0", "1200", "958"],
+    polygon = "0,0 1200,0 1200,958 0,958",
+    lower_hsv = "100,50,50",
+    upper_hsv = "140,255,255",
+    simplify = "0.002",
+    out = "cam_waterlines.geojson",
+    visibility = ["//visibility:public"],
+)
+
+line_segmentation(
+    name = "cam_waterlines_segmentation",
+    image = "@oma_data_oma_cam_waterlines_map//:artifact",
+    colorspace = "hsv",
+    channels = "0,1,2",
+    lower = "100,50,50",
+    upper = "140,255,255",
+    aggressive_lower = "90,40,40",
+    aggressive_upper = "150,255,255",
+    merge_strategy = "seed_proximity",
+    merge_radius = 4,
+    clahe = False,
+    clahe_clip = "2.0",
+    clahe_tile = 8,
+    conservative = "cam_waterlines_conservative.png",
+    aggressive = "cam_waterlines_aggressive.png",
+    merged = "cam_waterlines_merged.png",
+    debug = "cam_waterlines_segmentation_debug.png",
+    visibility = ["//visibility:public"],
+)
+
+line_binarize(
+    name = "cam_waterlines_binarize",
+    image = "@oma_data_oma_cam_waterlines_map//:artifact",
+    mask = ":cam_waterlines_merged.png",
+    method = "adaptive",
+    adaptive_window = 31,
+    adaptive_c = "2.0",
+    hysteresis = "60,140",
+    global_threshold = 120,
+    blur = "gaussian",
+    blur_radius = 3,
+    out = "cam_waterlines_binary.png",
+    debug = "cam_waterlines_binarize_debug.png",
+    visibility = ["//visibility:public"],
+)
+
+line_morphology(
+    name = "cam_waterlines_morphology",
+    image = "@oma_data_oma_cam_waterlines_map//:artifact",
+    mask = ":cam_waterlines_binary.png",
+    do_close = True,
+    do_open = False,
+    close_kernel = 3,
+    open_kernel = 3,
+    kernel_shape = "ellipse",
+    close_iterations = 1,
+    open_iterations = 1,
+    min_area = 20,
+    min_extent = 10,
+    out = "cam_waterlines_morphology.png",
+    debug = "cam_waterlines_morphology_debug.png",
+    stats = "cam_waterlines_morphology_stats.json",
+    visibility = ["//visibility:public"],
+)
+
+line_artifact_mask(
+    name = "cam_waterlines_artifacts",
+    image = "@oma_data_oma_cam_waterlines_map//:artifact",
+    mask = ":cam_waterlines_morphology.png",
+    detect_grid = True,
+    grid_min_length = 140,
+    grid_gap = 8,
+    grid_thickness = 6,
+    detect_circles = True,
+    circle_min_radius = 40,
+    circle_max_radius = 180,
+    circle_param1 = "120",
+    circle_param2 = "35",
+    roi_mode = "exclude",
+    out = "cam_waterlines_artifacts.png",
+    debug = "cam_waterlines_artifacts_debug.png",
+    visibility = ["//visibility:public"],
+)
+
+line_skeleton(
+    name = "cam_waterlines_skeleton",
+    image = "@oma_data_oma_cam_waterlines_map//:artifact",
+    mask = ":cam_waterlines_artifacts.png",
+    method = "morphological",
+    prune_spurs = 4,
+    out = "cam_waterlines_skeleton.png",
+    debug = "cam_waterlines_skeleton_debug.png",
+    visibility = ["//visibility:public"],
+)
+
+line_vectorize(
+    name = "cam_waterlines_vectorize",
+    image = "@oma_data_oma_cam_waterlines_map//:artifact",
+    mask = ":cam_waterlines_skeleton.png",
+    bbox = ["0", "0", "1200", "958"],
+    min_path_length = 10,
+    gap_bridge = "1.5",
+    out = "cam_waterlines_raw.geojson",
+    debug = "cam_waterlines_vectorize_debug.png",
+    stats = "cam_waterlines_vectorize_stats.json",
+    visibility = ["//visibility:public"],
+)
+
+line_topology_cleanup(
+    name = "cam_waterlines_topology",
+    image = "@oma_data_oma_cam_waterlines_map//:artifact",
+    input_geojson = ":cam_waterlines_raw.geojson",
+    bbox = ["0", "0", "1200", "958"],
+    spur_length = "5.0",
+    snap_tolerance = "1.0",
+    simplify = "0.3",
+    smooth_iterations = 0,
+    out = "cam_waterlines_final.geojson",
+    debug = "cam_waterlines_topology_debug.json",
+    visibility = ["//visibility:public"],
+)

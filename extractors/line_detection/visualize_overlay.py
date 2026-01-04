@@ -11,9 +11,12 @@ Example:
 from __future__ import annotations
 
 import argparse
+import base64
 import json
 from pathlib import Path
 from typing import Sequence, Tuple
+
+import cv2
 
 
 def parse_bbox(values: Sequence[str]) -> Tuple[float, float, float, float]:
@@ -25,15 +28,15 @@ def parse_bbox(values: Sequence[str]) -> Tuple[float, float, float, float]:
     return min_x, min_y, max_x, max_y
 
 
-def resolve_path(target: Path, base: Path) -> str:
-    try:
-        return str(target.relative_to(base))
-    except ValueError:
-        return str(target)
+def encode_png(image) -> str:
+    success, encoded = cv2.imencode(".png", image)
+    if not success:
+        raise ValueError("Failed to encode image to PNG.")
+    return base64.b64encode(encoded.tobytes()).decode("utf-8")
 
 
 def build_html(
-    image_path: str,
+    image_data_url: str,
     geojson: dict,
     bbox: Tuple[float, float, float, float],
     title: str,
@@ -102,7 +105,7 @@ def build_html(
     crossorigin=\"\"
   ></script>
   <script>
-    const imageUrl = {json.dumps(image_path)};
+    const imageUrl = {json.dumps(image_data_url)};
     const geojsonData = {geojson_text};
     const bounds = [[{min_y}, {min_x}], [{max_y}, {max_x}]];
     const crsMap = {{
@@ -195,8 +198,11 @@ def main() -> int:
     with geojson_path.open("r", encoding="utf-8") as handle:
         geojson = json.load(handle)
 
-    image_ref = resolve_path(image_path, output_path.parent)
-    html = build_html(image_ref, geojson, bbox, args.title, args.opacity, args.crs)
+    image = cv2.imread(str(image_path), cv2.IMREAD_COLOR)
+    if image is None:
+        raise ValueError(f"Failed to read image at '{image_path}'.")
+    image_data_url = f"data:image/png;base64,{encode_png(image)}"
+    html = build_html(image_data_url, geojson, bbox, args.title, args.opacity, args.crs)
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")

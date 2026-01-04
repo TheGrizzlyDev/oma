@@ -1,9 +1,7 @@
-"""Bazel rule for detecting colored lines into GeoJSON."""
+"""Bazel rule for legacy single-pass line detection."""
 
-TransformationInfo = provider(
-    doc = "Describes a line-detection transformation and its parameters.",
-    fields = ["description", "metadata"],
-)
+load("//extractors/line_detection:defs.bzl", "TransformationInfo")
+
 
 def _line_detection_geojson_impl(ctx):
     output = ctx.outputs.out

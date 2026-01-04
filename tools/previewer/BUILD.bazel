@@ -1,0 +1,25 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+
+exports_files(["preview_rules.bzl"])
+
+py_library(
+    name = "preview_utils",
+    srcs = ["preview_utils.py"],
+    deps = [
+        requirement("numpy"),
+        requirement("opencv-python-headless"),
+    ],
+)
+
+py_binary(
+    name = "preview_pass",
+    srcs = ["preview_pass.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":preview_utils",
+        "//extractors/line_detection:pipeline_utils",
+        requirement("numpy"),
+        requirement("opencv-python-headless"),
+    ],
+)

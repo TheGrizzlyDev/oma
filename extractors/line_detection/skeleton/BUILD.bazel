@@ -1,0 +1,14 @@
+load("@pypi//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary")
+
+exports_files(["rules.bzl"])
+
+py_binary(
+    name = "skeletonize_mask",
+    srcs = ["skeletonize_mask.py"],
+    deps = [
+        "//extractors/line_detection:pipeline_utils",
+        requirement("numpy"),
+        requirement("opencv-python-headless"),
+    ],
+)
