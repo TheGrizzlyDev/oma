@@ -12,7 +12,6 @@ def _missing_hash_test(ctx):
         sha256 = "",
         integrity = "",
         purl = "pkg:generic/oma/missing_hash@1.0",
-        license_kind_label = "@package_metadata//licenses/spdx:Apache-2.0",
     )
     asserts.true(env, errors, "Expected validation errors for missing hash")
     return unittest.end(env)
@@ -29,7 +28,6 @@ def _strip_prefix_requires_archive_test(ctx):
         extract = False,
         strip_prefix = "data",
         purl = "pkg:generic/oma/strip_prefix@1.0",
-        license_kind_label = "@package_metadata//licenses/spdx:Apache-2.0",
     )
     asserts.true(env, errors, "Expected validation errors for strip_prefix without archive")
     return unittest.end(env)
@@ -46,7 +44,6 @@ def _valid_archive_test(ctx):
         extract = True,
         strip_prefix = "data",
         purl = "pkg:generic/oma/valid_archive@1.0",
-        license_kind_label = "@package_metadata//licenses/spdx:Apache-2.0",
     )
     asserts.equals(env, [], errors)
     return unittest.end(env)

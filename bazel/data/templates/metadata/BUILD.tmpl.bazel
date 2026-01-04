@@ -3,21 +3,11 @@ load("@package_metadata//rules:package_metadata.bzl", "package_metadata")
 
 package(default_visibility = ["//visibility:public"])
 
-alias(
-    name = "license_kind",
-    actual = "%{license_kind_label}",
-)
-
-license(
-    name = "license",
-    kind = ":license_kind",
-%{license_text_line}
-    visibility = ["//visibility:public"],
-)
+%{license_block}
 
 package_metadata(
     name = "package_metadata",
     purl = "%{purl}",
-    attributes = [":license"],
+    attributes = %{package_metadata_attributes},
     visibility = ["//visibility:public"],
 )

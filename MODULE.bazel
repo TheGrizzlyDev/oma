@@ -48,6 +48,9 @@ register_toolchains(
 )
 
 oma = use_extension("//bazel/data:extension.bzl", "oma")
+
+# OMA data artifacts (managed by tools/import_data)
+# OMA_DATA_START
 oma.file(
     name = "test_sample_file",
     license_kind_label = "@package_metadata//licenses/spdx:Apache-2.0",
@@ -69,8 +72,12 @@ oma.archive(
         "https://github.com/sindresorhus/mnemonic-words/archive/refs/tags/v1.1.0.tar.gz",
     ],
 )
+# OMA_DATA_END
+
 use_repo(
     oma,
     "oma_data_oma_test_sample_archive",
     "oma_data_oma_test_sample_file",
+    "oma_data_oma_test_sample_file_no_license",
+    "oma_data_oma_test_sample_file_no_version",
 )

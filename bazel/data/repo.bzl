@@ -19,7 +19,6 @@ def _repo_impl(ctx):
         extract = ctx.attr.extract,
         strip_prefix = ctx.attr.strip_prefix,
         purl = ctx.attr.purl,
-        license_kind_label = ctx.attr.license_kind_label,
     )
     if errors:
         fail("Invalid oma_data artifact {}: {}".format(ctx.attr.name, "; ".join(errors)))
@@ -47,16 +46,46 @@ def _repo_impl(ctx):
             integrity = ctx.attr.integrity,
         )
 
-    license_text_line = ""
-    if ctx.attr.license_text:
-        license_text_line = "    text = \"{}\",".format(ctx.attr.license_text)
+    license_block = ""
+    package_metadata_attributes = "[]"
+    license_aliases = ""
+    if ctx.attr.license_kind_label:
+        license_text_line = ""
+        if ctx.attr.license_text:
+            license_text_line = "    text = \"{}\",".format(ctx.attr.license_text)
+        license_block = "\n".join([
+            "alias(",
+            "    name = \"license_kind\",",
+            "    actual = \"{}\",".format(ctx.attr.license_kind_label),
+            ")",
+            "",
+            "license(",
+            "    name = \"license\",",
+            "    kind = \":license_kind\",",
+            license_text_line,
+            "    visibility = [\"//visibility:public\"],",
+            ")",
+            "",
+        ])
+        package_metadata_attributes = "[\":license\"]"
+        license_aliases = "\n".join([
+            "alias(",
+            "    name = \"license\",",
+            "    actual = \"//metadata:license\",",
+            ")",
+            "",
+            "alias(",
+            "    name = \"license_kind\",",
+            "    actual = \"//metadata:license_kind\",",
+            ")",
+        ])
 
     ctx.template(
         "metadata/BUILD.bazel",
         _METADATA_BUILD_TEMPLATE,
         substitutions = {
-            "%{license_kind_label}": str(ctx.attr.license_kind_label),
-            "%{license_text_line}": license_text_line,
+            "%{license_block}": license_block,
+            "%{package_metadata_attributes}": package_metadata_attributes,
             "%{purl}": ctx.attr.purl,
         },
     )
@@ -73,13 +102,16 @@ def _repo_impl(ctx):
             template,
             substitutions = {
                 "%{archive_name}": archive_name,
+                "%{license_aliases}": license_aliases,
             },
         )
     else:
         ctx.template(
             "BUILD.bazel",
             _BUILD_FILE_TEMPLATE,
-            substitutions = {},
+            substitutions = {
+                "%{license_aliases}": license_aliases,
+            },
         )
 
 
@@ -89,7 +121,7 @@ oma_data_repo = repository_rule(
         "archive_type": attr.string(default = ""),
         "extract": attr.bool(default = False),
         "integrity": attr.string(default = ""),
-        "license_kind_label": attr.label(mandatory = True),
+        "license_kind_label": attr.label(),
         "license_text": attr.string(default = ""),
         "purl": attr.string(mandatory = True),
         "sha256": attr.string(default = ""),

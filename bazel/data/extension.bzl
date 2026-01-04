@@ -18,7 +18,6 @@ def _oma_data_extension_impl(module_ctx):
                 sha256 = tag.sha256,
                 integrity = tag.integrity,
                 purl = tag.purl,
-                license_kind_label = tag.license_kind_label,
             )
             if errors:
                 fail("Invalid oma file artifact {}: {}".format(tag.name, "; ".join(errors)))
@@ -50,7 +49,6 @@ def _oma_data_extension_impl(module_ctx):
                 extract = tag.extract,
                 strip_prefix = tag.strip_prefix,
                 purl = tag.purl,
-                license_kind_label = tag.license_kind_label,
             )
             if errors:
                 fail("Invalid oma archive artifact {}: {}".format(tag.name, "; ".join(errors)))
@@ -84,7 +82,7 @@ oma = module_extension(
                 "sha256": attr.string(default = ""),
                 "integrity": attr.string(default = ""),
                 "purl": attr.string(mandatory = True),
-                "license_kind_label": attr.label(mandatory = True),
+                "license_kind_label": attr.label(),
                 "license_text": attr.string(default = ""),
             },
         ),
@@ -98,7 +96,7 @@ oma = module_extension(
                 "strip_prefix": attr.string(default = ""),
                 "extract": attr.bool(default = False),
                 "purl": attr.string(mandatory = True),
-                "license_kind_label": attr.label(mandatory = True),
+                "license_kind_label": attr.label(),
                 "license_text": attr.string(default = ""),
             },
         ),

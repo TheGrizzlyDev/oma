@@ -19,8 +19,7 @@ def _validate_common_settings(
         urls,
         sha256,
         integrity,
-        purl,
-        license_kind_label):
+        purl):
     errors = []
     if not name:
         errors.append("name is required")
@@ -30,8 +29,6 @@ def _validate_common_settings(
         errors.append("sha256 or integrity must be provided")
     if not purl:
         errors.append("purl is required")
-    if not license_kind_label:
-        errors.append("license_kind_label is required")
     return errors
 
 
@@ -40,15 +37,13 @@ def validate_file_settings(
         urls,
         sha256,
         integrity,
-        purl,
-        license_kind_label):
+        purl):
     return _validate_common_settings(
         name = name,
         urls = urls,
         sha256 = sha256,
         integrity = integrity,
         purl = purl,
-        license_kind_label = license_kind_label,
     )
 
 
@@ -60,15 +55,13 @@ def validate_archive_settings(
         archive_type,
         extract,
         strip_prefix,
-        purl,
-        license_kind_label):
+        purl):
     errors = _validate_common_settings(
         name = name,
         urls = urls,
         sha256 = sha256,
         integrity = integrity,
         purl = purl,
-        license_kind_label = license_kind_label,
     )
     if not archive_type:
         errors.append("archive_type is required")
@@ -87,15 +80,13 @@ def validate_artifact_settings(
         archive_type,
         extract,
         strip_prefix,
-        purl,
-        license_kind_label):
+        purl):
     errors = _validate_common_settings(
         name = name,
         urls = urls,
         sha256 = sha256,
         integrity = integrity,
         purl = purl,
-        license_kind_label = license_kind_label,
     )
     if archive_type:
         if archive_type not in _ARCHIVE_TYPES:

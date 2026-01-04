@@ -7,15 +7,7 @@ alias(
     actual = "//metadata:package_metadata",
 )
 
-alias(
-    name = "license",
-    actual = "//metadata:license",
-)
-
-alias(
-    name = "license_kind",
-    actual = "//metadata:license_kind",
-)
+%{license_aliases}
 
 filegroup(
     name = "artifact_files",

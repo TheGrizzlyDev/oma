@@ -165,8 +165,8 @@
   "moduleExtensions": {
     "//bazel/data:extension.bzl%oma": {
       "general": {
-        "bzlTransitiveDigest": "Z+/3zaF1px47h6IDIXycOJt646rXQdrSE62ZCr5Qsvk=",
-        "usagesDigest": "MX0ly9gUmEz13u0TdfR8QT7dc23yY1RMQ6MGOm6xhGU=",
+        "bzlTransitiveDigest": "JaXQjmGWgEbA/I/RBPYwX6g7ubJAz474/tLIpQZnNp8=",
+        "usagesDigest": "hFPNUqBPWYZd+OJgx1D7P3O3Ss3owADUXNj65luu0vE=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -180,6 +180,37 @@
               "license_kind_label": "@@package_metadata+//licenses/spdx:Apache-2.0",
               "license_text": "",
               "purl": "pkg:generic/oma/test_sample_file@1.5.0?download_url=https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE",
+              "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+              "strip_prefix": "",
+              "urls": [
+                "https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE"
+              ]
+            }
+          },
+          "oma_data_oma_test_sample_file_no_license": {
+            "repoRuleId": "@@//bazel/data:repo.bzl%oma_data_repo",
+            "attributes": {
+              "archive_type": "",
+              "extract": false,
+              "integrity": "",
+              "license_text": "",
+              "purl": "pkg:generic/oma/test_sample_file_no_license@1.5.0?download_url=https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE",
+              "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+              "strip_prefix": "",
+              "urls": [
+                "https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE"
+              ]
+            }
+          },
+          "oma_data_oma_test_sample_file_no_version": {
+            "repoRuleId": "@@//bazel/data:repo.bzl%oma_data_repo",
+            "attributes": {
+              "archive_type": "",
+              "extract": false,
+              "integrity": "",
+              "license_kind_label": "@@package_metadata+//licenses/spdx:Apache-2.0",
+              "license_text": "",
+              "purl": "pkg:generic/oma/test_sample_file_no_version?download_url=https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE",
               "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
               "strip_prefix": "",
               "urls": [
