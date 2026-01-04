@@ -166,7 +166,7 @@
     "//bazel/data:extension.bzl%oma": {
       "general": {
         "bzlTransitiveDigest": "JaXQjmGWgEbA/I/RBPYwX6g7ubJAz474/tLIpQZnNp8=",
-        "usagesDigest": "hFPNUqBPWYZd+OJgx1D7P3O3Ss3owADUXNj65luu0vE=",
+        "usagesDigest": "azcSrU5kxJqKkQz6e57ilr31/QlQ6Gksg9qLrYgUFsc=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},
@@ -187,34 +187,18 @@
               ]
             }
           },
-          "oma_data_oma_test_sample_file_no_license": {
+          "oma_data_oma_cam_waterlines_map": {
             "repoRuleId": "@@//bazel/data:repo.bzl%oma_data_repo",
             "attributes": {
               "archive_type": "",
               "extract": false,
               "integrity": "",
               "license_text": "",
-              "purl": "pkg:generic/oma/test_sample_file_no_license@1.5.0?download_url=https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE",
-              "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+              "purl": "pkg:generic/oma/cam_waterlines_map?download_url=https://cam.iswebcloud.it/output_allegato.php?id=356489&larghezza=1920",
+              "sha256": "74e9616913b8b3abde8cab411ec62cf5ebd77676489260d241738f964ae866e9",
               "strip_prefix": "",
               "urls": [
-                "https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE"
-              ]
-            }
-          },
-          "oma_data_oma_test_sample_file_no_version": {
-            "repoRuleId": "@@//bazel/data:repo.bzl%oma_data_repo",
-            "attributes": {
-              "archive_type": "",
-              "extract": false,
-              "integrity": "",
-              "license_kind_label": "@@package_metadata+//licenses/spdx:Apache-2.0",
-              "license_text": "",
-              "purl": "pkg:generic/oma/test_sample_file_no_version?download_url=https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE",
-              "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
-              "strip_prefix": "",
-              "urls": [
-                "https://raw.githubusercontent.com/bazelbuild/bazel-skylib/1.5.0/LICENSE"
+                "https://cam.iswebcloud.it/output_allegato.php?id=356489&larghezza=1920"
               ]
             }
           },
