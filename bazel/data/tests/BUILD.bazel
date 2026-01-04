@@ -1,0 +1,5 @@
+load("//bazel/data/tests:validation_tests.bzl", "validation_test_suite")
+
+package(default_visibility = ["//visibility:public"])
+
+validation_test_suite(name = "validation_tests")

@@ -1,0 +1,29 @@
+load(":oma_data_artifact.bzl", "oma_data_artifact")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "package_metadata",
+    actual = "//metadata:package_metadata",
+)
+
+alias(
+    name = "license",
+    actual = "//metadata:license",
+)
+
+alias(
+    name = "license_kind",
+    actual = "//metadata:license_kind",
+)
+
+filegroup(
+    name = "artifact_files",
+    srcs = ["artifact.data"],
+)
+
+oma_data_artifact(
+    name = "artifact",
+    srcs = [":artifact_files"],
+    package_metadata = ["//metadata:package_metadata"],
+)

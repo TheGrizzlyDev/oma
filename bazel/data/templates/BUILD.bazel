@@ -1,0 +1,9 @@
+package(default_visibility = ["//visibility:public"])
+
+exports_files([
+    "BUILD.archive.tmpl.bazel",
+    "BUILD.archive_extract.tmpl.bazel",
+    "BUILD.file.tmpl.bazel",
+    "oma_data_artifact.tmpl.bzl",
+    "metadata/BUILD.tmpl.bazel",
+])

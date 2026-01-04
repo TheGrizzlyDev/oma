@@ -6,5 +6,12 @@
   "remoteEnv": {
     "PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
   },
-  "postCreateCommand": "bash scripts/devcontainer-setup.sh"
+  "postCreateCommand": "bash scripts/devcontainer-setup.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "astro-build.astro-vscode"
+      ]
+    }
+  }
 }

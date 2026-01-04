@@ -3,29 +3,35 @@ load("@npm//:defs.bzl", "npm_link_all_packages")
 
 npm_link_all_packages()
 
+filegroup(
+    name = "srcs",
+    srcs = glob(
+        [
+            "public/**",
+            "src/**",
+        ],
+    ) + [
+        "astro.config.mjs",
+        "package.json",
+        "package-lock.json",
+        "tsconfig.json",
+    ],
+)
+
 js_binary(
     name = "astro",
     data = [":node_modules"],
     entry_point = "astro_cli.mjs",
 )
 
-js_run_binary(
-    name = "build",
-    tool = ":astro",
-    args = ["build"],
-    chdir = package_name(),
-    out_dirs = ["dist"],
-    srcs = glob(
-        [
-            "astro.config.mjs",
-            "package.json",
-            "package-lock.json",
-            "public/**",
-            "src/**",
-            "tsconfig.json",
-        ],
-    ),
-)
+# js_run_binary(
+#     name = "build",
+#     tool = ":astro",
+#     args = ["build"],
+#     chdir = package_name(),
+#     out_dirs = ["dist"],
+#     srcs = [":srcs"],
+# )
 
 js_run_binary(
     name = "dev",
@@ -33,16 +39,7 @@ js_run_binary(
     args = ["build", "--devOutput"],
     chdir = package_name(),
     out_dirs = ["dist"],
-    srcs = glob(
-        [
-            "astro.config.mjs",
-            "package.json",
-            "package-lock.json",
-            "public/**",
-            "src/**",
-            "tsconfig.json",
-        ],
-    ),
+    srcs = [":srcs"],
 )
 
 js_binary(

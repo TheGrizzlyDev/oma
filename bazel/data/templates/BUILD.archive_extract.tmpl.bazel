@@ -1,0 +1,40 @@
+load(":oma_data_artifact.bzl", "oma_data_artifact")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "package_metadata",
+    actual = "//metadata:package_metadata",
+)
+
+alias(
+    name = "license",
+    actual = "//metadata:license",
+)
+
+alias(
+    name = "license_kind",
+    actual = "//metadata:license_kind",
+)
+
+filegroup(
+    name = "archive_files",
+    srcs = ["%{archive_name}"],
+)
+
+oma_data_artifact(
+    name = "archive",
+    srcs = [":archive_files"],
+    package_metadata = ["//metadata:package_metadata"],
+)
+
+filegroup(
+    name = "extracted_files",
+    srcs = glob(["extracted/**"]),
+)
+
+oma_data_artifact(
+    name = "extracted",
+    srcs = [":extracted_files"],
+    package_metadata = ["//metadata:package_metadata"],
+)
